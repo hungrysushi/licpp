@@ -1,6 +1,9 @@
+#pragma once
+
 #include <iostream>
 #include <regex>
 #include <vector>
+#include <list>
 
 class Tokenizer {
 
@@ -8,7 +11,7 @@ public:
     Tokenizer(const std::string& token_regex);
     ~Tokenizer();
 
-    void Tokenize(std::string line);
+    std::list<std::string> Tokenize(std::string line);
     void PrintTokens();
 
 protected:
