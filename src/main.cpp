@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 
+#include "parser.h"
 #include "tokenizer.h"
 
 int main()
@@ -19,6 +20,7 @@ void repl()
 
     // got token regex from https://github.com/kanaka/mal/blob/master/process/guide.md#step0
     Tokenizer tokenizer(R"regex([\s,]*(~@|[\[\]{}()'`~^@]|"(?:\\.|[^\\"])*"|;.*|[^\s\[\]{}('"`,;)]+))regex");
+    Parser parser;
 
     while ((line = readline("licpp> ")) != nullptr) {
         std::cout << line << std::endl;
@@ -28,9 +30,9 @@ void repl()
         }
 
         std::string line_str(line);
-        tokenizer.Tokenize(line_str);
-        std::cout << "Tokens: " << std::endl;
-        tokenizer.PrintTokens();
+        std::list<std::string> tokens = tokenizer.Tokenize(line_str);
+
+        parser.Parse(tokens);
 
         free(line);
     }
