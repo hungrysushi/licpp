@@ -33,6 +33,7 @@ void repl()
         std::list<std::string> tokens = tokenizer.Tokenize(line_str);
 
         parser.Parse(tokens);
+        parser.PrintTree();
 
         free(line);
     }
