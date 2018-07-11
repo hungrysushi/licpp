@@ -37,6 +37,7 @@ std::ostream& operator<< (std::ostream& os, const Node& node) {
         case NodeType::NUMBER:
                                 os << *((int64_t*) node.buffer_);
                                 break;
+        case NodeType::KEYWORD:
         case NodeType::SYMBOL:
         case NodeType::STRING:
                                 os << ((char*) node.buffer_);

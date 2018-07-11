@@ -6,6 +6,7 @@ enum class NodeType {
     NUMBER,
     STRING,
     SYMBOL,
+    KEYWORD,
     LIST,
     UNIMPLEMENTED,
 };
@@ -21,6 +22,9 @@ inline std::ostream& operator<< (std::ostream& os, const NodeType type) {
                                 break;
         case NodeType::SYMBOL:
                                 os << "SYMBOL";
+                                break;
+        case NodeType::KEYWORD:
+                                os << "KEYWORD";
                                 break;
         case NodeType::LIST:
                                 os << "LIST";

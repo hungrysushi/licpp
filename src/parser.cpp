@@ -69,6 +69,11 @@ Node Parser::Atom(const std::string& token) {
         return Node(NodeType::STRING, (void*) (token.c_str()), sizeof(token.c_str()), current_level_);
     }
 
+    if (ParseKeyword(token)) {
+        std::cout << "Parsed Keyword: " << token.c_str() << std::endl;
+        return Node(NodeType::KEYWORD, (void*) (token.c_str()), sizeof(token.c_str()), current_level_);
+    }
+
     // TODO parse token into data and put in node
     return Node(NodeType::SYMBOL, (void*) (token.c_str()), sizeof(token.c_str()), current_level_);
 }
@@ -90,11 +95,12 @@ bool Parser::ParseNumber(const std::string& token, int64_t& value) {
 bool Parser::ParseString(const std::string& token) {
 
     // strings will begin and end with the double-quote character
-    if (token[0] == '"' && token[token.size() - 2]) {
-        return true;
-    }
+    return (token[0] == '"' && token[token.size() - 2]);
+}
 
-    return false;
+bool Parser::ParseKeyword(const std::string& token) {
+
+    return (token[0] == ':');
 }
 
 void Parser::PrintTree() {
