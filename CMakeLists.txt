@@ -7,6 +7,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_executable(licpp
         src/main.cpp
+        src/eval.cpp
         src/node.cpp
         src/parser.cpp
         src/tokenizer.cpp

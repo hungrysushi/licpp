@@ -83,6 +83,10 @@ void Parser::ClearTree() {
     tree_ = Node(NodeType::LIST, nullptr);
 }
 
+Node& Parser::GetTree() {
+    return tree_;
+}
+
 bool Parser::ParseNumber(const std::string& token, int64_t& value) {
 
     char *endptr;

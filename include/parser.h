@@ -14,6 +14,7 @@ public:
     void Parse(std::list<std::string>& tokens);
     void PrintTree();
     void ClearTree();
+    Node& GetTree();
 
 protected:
     Node Atom(const std::string& token);
