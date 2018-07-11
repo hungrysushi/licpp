@@ -13,6 +13,7 @@ public:
 
     void Parse(std::list<std::string>& tokens);
     void PrintTree();
+    void ClearTree();
 
 protected:
     Node Atom(const std::string& token);
@@ -21,7 +22,7 @@ protected:
     /*
      * functions to determine the type of the token
      */
-    uint64_t* ParseNumber(const std::string& token);
+    bool ParseNumber(const std::string& token, int64_t& value);
 
     std::string token_pattern_;
 

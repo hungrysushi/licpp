@@ -34,6 +34,7 @@ void repl()
 
         parser.Parse(tokens);
         parser.PrintTree();
+        parser.ClearTree();
 
         free(line);
     }

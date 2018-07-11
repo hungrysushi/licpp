@@ -2,22 +2,22 @@
 
 #include <cstdint>
 
-Node::Node(const NodeType& type, void* data, Node* parent)
+Node::Node(const NodeType& type, int64_t data, Node* parent)
     : type_(type),
-      buffer_(data),
+      data_(data),
       parent_(parent) {
 
 }
 
 Node::~Node() {
     /* delete buffer_; */
-    switch (type_) {
-        case NodeType::NUMBER:
-                                delete (int64_t*) buffer_;
-                                break;
-        default:
-                                break;
-    }
+    /* switch (type_) { */
+    /*     case NodeType::NUMBER: */
+    /*                             delete (int64_t*) buffer_; */
+    /*                             break; */
+    /*     default: */
+    /*                             break; */
+    /* } */
 }
 
 std::ostream& operator<< (std::ostream& os, const Node& node) {
@@ -25,7 +25,7 @@ std::ostream& operator<< (std::ostream& os, const Node& node) {
 
     switch (node.type_) {
         case NodeType::NUMBER:
-                                os << *((uint64_t*) node.buffer_);
+                                os << node.data_;
                                 break;
         default:
                                 break;
