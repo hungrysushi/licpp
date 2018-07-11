@@ -56,8 +56,35 @@ void Parser::Parse(std::list<std::string>& tokens) {
 
 Node Parser::Atom(const std::string& token) {
 
-    // TODO parse into basic types
     std::cout << "token: " << token << std::endl;
 
-    return Node(NodeType::UNIMPLEMENTED);
+    NodeType type = GetType(token);
+
+    // TODO parse token into data and put in node
+    return Node(type);
+}
+
+NodeType Parser::GetType(const std::string& token) {
+
+    if (IsNumber(token)) {
+        return NodeType::NUMBER;
+    }
+
+    if (IsSymbol(token)) {
+        return NodeType::SYMBOL;
+    }
+
+    return NodeType::UNIMPLEMENTED;
+}
+
+bool Parser::IsNumber(const std::string& token) {
+
+    // TODO
+    return false;
+}
+
+bool Parser::IsSymbol(const std::string& token) {
+
+    // TODO
+    return false;
 }

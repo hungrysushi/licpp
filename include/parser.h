@@ -12,9 +12,16 @@ public:
     ~Parser();
 
     void Parse(std::list<std::string>& tokens);
-    Node Atom(const std::string& token);
 
 protected:
+    Node Atom(const std::string& token);
+
+    /*
+     * functions to determine the type of the token
+     */
+    NodeType GetType(const std::string& token);
+    bool IsNumber(const std::string& token);
+    bool IsSymbol(const std::string& token);
 
     std::string token_pattern_;
 
