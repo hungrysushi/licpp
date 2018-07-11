@@ -7,13 +7,14 @@
 
 class Node {
 public:
-    Node(const NodeType& type, int64_t data, Node* parent);
+    Node(const NodeType& type, Node* parent);
+    Node(const NodeType& type, void* data, int64_t size, Node* parent);
     ~Node();
 
     friend std::ostream& operator<< (std::ostream& os, const Node& node);
 
     NodeType type_;
-    void* buffer_ = nullptr;
+    uint8_t* buffer_ = nullptr;
     int64_t data_;
 
     Node* parent_ = nullptr;

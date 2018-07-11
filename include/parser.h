@@ -23,6 +23,7 @@ protected:
      * functions to determine the type of the token
      */
     bool ParseNumber(const std::string& token, int64_t& value);
+    bool ParseString(const std::string& token);
 
     std::string token_pattern_;
 

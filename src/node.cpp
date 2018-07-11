@@ -1,12 +1,21 @@
 #include "node.h"
 
 #include <cstdint>
+#include <cstring>
 
-Node::Node(const NodeType& type, int64_t data, Node* parent)
+Node::Node(const NodeType& type, Node* parent)
     : type_(type),
-      data_(data),
       parent_(parent) {
 
+}
+
+Node::Node(const NodeType& type, void* data, int64_t size, Node* parent)
+    : type_(type),
+      parent_(parent) {
+
+    buffer_ = new uint8_t[size];
+
+    memcpy(buffer_, data, size * sizeof(uint8_t));
 }
 
 Node::~Node() {
@@ -18,6 +27,7 @@ Node::~Node() {
     /*     default: */
     /*                             break; */
     /* } */
+    /* delete[] buffer_; */
 }
 
 std::ostream& operator<< (std::ostream& os, const Node& node) {
@@ -25,7 +35,11 @@ std::ostream& operator<< (std::ostream& os, const Node& node) {
 
     switch (node.type_) {
         case NodeType::NUMBER:
-                                os << node.data_;
+                                os << *((int64_t*) node.buffer_);
+                                break;
+        case NodeType::SYMBOL:
+        case NodeType::STRING:
+                                os << ((char*) node.buffer_);
                                 break;
         default:
                                 break;

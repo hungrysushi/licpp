@@ -5,7 +5,7 @@
 #include "types.h"
 
 Parser::Parser()
-    : tree_(NodeType::LIST, 0, nullptr) {
+    : tree_(NodeType::LIST, nullptr) {
 
     //
     current_level_ = &tree_;
@@ -30,7 +30,7 @@ void Parser::Parse(std::list<std::string>& tokens) {
         
         // begin new list in tree
         std::cout << "begin list" << std::endl;
-        current_level_->leaves_.emplace_back(NodeType::LIST, 0, current_level_);
+        current_level_->leaves_.emplace_back(NodeType::LIST, current_level_);
         current_level_ = &(current_level_->leaves_.back());
 
     } else if (token == ")") {  // end this list
@@ -58,20 +58,24 @@ Node Parser::Atom(const std::string& token) {
 
     std::cout << "token: " << token << std::endl;
 
-    // try to parse a number first
     int64_t value;
     if (ParseNumber(token, value)) {
         std::cout << "Parsed Number: " << value << std::endl;
-        return Node(NodeType::NUMBER, value, current_level_);
+        return Node(NodeType::NUMBER, (void*) (&value), sizeof(value), current_level_);
+    }
+
+    if (ParseString(token)) {
+        std::cout << "Parsed String: " << token.c_str() << std::endl;
+        return Node(NodeType::STRING, (void*) (token.c_str()), sizeof(token.c_str()), current_level_);
     }
 
     // TODO parse token into data and put in node
-    return Node(NodeType::UNIMPLEMENTED, 0, current_level_);
+    return Node(NodeType::SYMBOL, (void*) (token.c_str()), sizeof(token.c_str()), current_level_);
 }
 
 void Parser::ClearTree() {
 
-    tree_ = Node(NodeType::LIST, 0, nullptr);
+    tree_ = Node(NodeType::LIST, nullptr);
 }
 
 bool Parser::ParseNumber(const std::string& token, int64_t& value) {
@@ -81,6 +85,16 @@ bool Parser::ParseNumber(const std::string& token, int64_t& value) {
 
     // if we haven't reached the null char, then there was some non-numerical data in the string
     return (*endptr == '\0');
+}
+
+bool Parser::ParseString(const std::string& token) {
+
+    // strings will begin and end with the double-quote character
+    if (token[0] == '"' && token[token.size() - 2]) {
+        return true;
+    }
+
+    return false;
 }
 
 void Parser::PrintTree() {
