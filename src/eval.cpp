@@ -21,33 +21,60 @@ Eval::~Eval() {
 
 }
 
-bool Eval::EvaluateAst(const Node& tree) {
+// evaluate a tree (ie a list with a nested list)
+int64_t Eval::EvaluateAst(const Node& tree) {
 
-    // TODO
-
-/*     switch (tree.type_) { */
-/*         case NodeType::LIST: */
-/*             break; */
-/*         default: */
-/*             break; */
-/*     } */
+    int64_t value;
 
     for (auto & leaf : tree.leaves_) {
 
-        std::cout << "Eval: " << leaf.type_ << std::endl;
-
-        switch ()
+        switch (leaf.type_) {
+            case NodeType::LIST:
+                return EvaluateAst(leaf);
+                break;
+            case NodeType::SYMBOL:
+                return EvaluateList(tree);
+                break;
+            default:
+                break;
+        }
     }
 
-    return false;
+    return value;
 }
 
-bool Eval::Evaluate(const std::string& symbol, int64_t a, int64_t b, int64_t& result) {
+// evaluate a list. If there is a nested list, pass it to EvaluateAst
+int64_t Eval::EvaluateList(const Node& eval_list) {
 
-    if (eval_map_.count(symbol)) {
-        result = eval_map_[symbol](a, b);
-        return true;
+    std::function<int64_t(int64_t,int64_t)> eval_function = nullptr;
+
+    int64_t value;
+    int64_t expr_value;
+    bool first_set = false;
+
+    for (auto & leaf : eval_list.leaves_) {
+
+        switch (leaf.type_) {
+            case NodeType::SYMBOL:
+                eval_function = eval_map_[std::string((char*)leaf.buffer_)];
+                break;
+            case NodeType::NUMBER:
+                if (first_set) {
+                    value = eval_function(value, *((int64_t*) leaf.buffer_));
+                } else {
+                    value = *((int64_t*) leaf.buffer_);
+                    first_set = true;
+                }
+                break;
+            case NodeType::LIST:
+                expr_value = EvaluateAst(leaf);
+                value = eval_function(value, expr_value);
+                break;
+            default:
+                break;
+        }
     }
 
-    return false;
+    return value;
 }
+

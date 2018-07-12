@@ -35,10 +35,10 @@ void repl()
         std::list<std::string> tokens = tokenizer.Tokenize(line_str);
 
         parser.Parse(tokens);
-        parser.PrintTree();
+        /* parser.PrintTree(); */
         Node& tree = parser.GetTree();
 
-        eval.EvaluateAst(tree);
+        std::cout << eval.EvaluateAst(tree) << std::endl;
 
         // clean up
         parser.ClearTree();
