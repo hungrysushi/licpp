@@ -25,7 +25,7 @@ void repl()
     Eval eval;
 
     while ((line = readline("licpp> ")) != nullptr) {
-        std::cout << line << std::endl;
+        /* std::cout << line << std::endl; */
 
         if (*line) {
             add_history(line);

@@ -29,14 +29,14 @@ void Parser::Parse(std::list<std::string>& tokens) {
     if (token == "(") {  // begin new list
         
         // begin new list in tree
-        std::cout << "begin list" << std::endl;
+        /* std::cout << "begin list" << std::endl; */
         current_level_->leaves_.emplace_back(NodeType::LIST, current_level_);
         current_level_ = &(current_level_->leaves_.back());
 
     } else if (token == ")") {  // end this list
         
         // end the list and move back up to the parent
-        std::cout << "ending list" << std::endl;
+        /* std::cout << "ending list" << std::endl; */
         
         if (current_level_->parent_) {
             current_level_ = current_level_->parent_;
@@ -56,21 +56,21 @@ void Parser::Parse(std::list<std::string>& tokens) {
 
 Node Parser::Atom(const std::string& token) {
 
-    std::cout << "token: " << token << std::endl;
+    /* std::cout << "token: " << token << std::endl; */
 
     int64_t value;
     if (ParseNumber(token, value)) {
-        std::cout << "Parsed Number: " << value << std::endl;
+        /* std::cout << "Parsed Number: " << value << std::endl; */
         return Node(NodeType::NUMBER, (void*) (&value), sizeof(value), current_level_);
     }
 
     if (ParseString(token)) {
-        std::cout << "Parsed String: " << token.c_str() << std::endl;
+        /* std::cout << "Parsed String: " << token.c_str() << std::endl; */
         return Node(NodeType::STRING, (void*) (token.c_str()), sizeof(token.c_str()), current_level_);
     }
 
     if (ParseKeyword(token)) {
-        std::cout << "Parsed Keyword: " << token.c_str() << std::endl;
+        /* std::cout << "Parsed Keyword: " << token.c_str() << std::endl; */
         return Node(NodeType::KEYWORD, (void*) (token.c_str()), sizeof(token.c_str()), current_level_);
     }
 
